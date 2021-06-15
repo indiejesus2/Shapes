@@ -1,9 +1,10 @@
 class Shapes {
     static container = document.getElementById('canvas_container')
+    static canvas = document.getElementById("canvas")
 
     constructor() {
-        this.renderCanvas()
-        this.renderButtons()
+        // this.renderCanvas()
+        // this.renderButtons()
         this.attachClickEventListener()
     }
 
@@ -12,9 +13,8 @@ class Shapes {
     }
 
     handleOnClick = (e) => {
-        debugger
         if (e.target.id == "add_rectangle") {
-            console.log("hey")
+            // let canvas = document.getElementById("canvas")
             const ctx = canvas.getContext('2d');
             ctx.fillStyle = "green";
             ctx.fillRect(10, 10, 150, 100)
@@ -22,16 +22,17 @@ class Shapes {
     }
 
     renderCanvas() {
-        debugger
         const canvas = document.createElement("canvas");
-        canvas.className = "canvas"
+        // canvas.id = "canvas"
+        debugger
         this.canvas = canvas
         this.constructor.container.append(canvas)
     }
 
     renderButtons() {
-        const rectangle = document.createElement("rectangle");
+        const rectangle = document.createElement("button");
         rectangle.className = "add_rectangle"
+        rectangle.innerText = "Add Rectangle"
         this.rectangle = rectangle
         this.constructor.container.append(rectangle)
     }
