@@ -11,7 +11,7 @@ class Rectangles {
     }
 
     attachClickEventListener() {
-        document.addEventListener("click", this.handleOnClick);
+        canvas.addEventListener("click", this.handleOnClick);
     }
 
     handleOnClick = (e) => {
@@ -25,7 +25,7 @@ class Rectangles {
             ctx.rect(shape.x, shape.y, shape.width, shape.height)
             ctx.fill()
             debugger
-            if (ctx.isPointInPath(e.offsetX, e.offsetY)) {
+            if (ctx.isPointInPath(mouseX, mouseY)) {
                 console.log('hey')
             } else {
                 console.log('nope', mouseX, mouseY)
