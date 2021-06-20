@@ -14,36 +14,64 @@ class Rectangles {
         canvas.addEventListener("click", this.handleOnClick);
     }
 
+    isMouseInShape(mx, my, shape){
+        var rLeft = shape.x
+        var rRight=shape.x+shape.width;
+        var rTop=shape.y
+        var rBott=rTop+shape.height
+        if(mx>rLeft && mx<rRight && my>rTop && my<rBott) {
+            return true
+        }
+    }
+
     handleOnClick = (e) => {
-        this.shapes.forEach(shape => {
-            var x = e.pageX - (canvas.offsetLeft + canvas.clientLeft);
-            var y = e.pageY - (canvas.offsetTop + canvas.clientTop);
-            let mouseX = (e.clientX - canvas.offsetLeft)
-            let mouseY = (e.clientY - canvas.offsetTop)
-            let ctx = canvas.getContext('2d')
-            ctx.clearRect(0, 0, 0, 0)
-            ctx.rect(shape.x, shape.y, shape.width, shape.height)
+        e.preventDefault()
+        e.stopPropagation()
+        const startX = parseInt(e.clientX-e.offsetX);
+        const startY = parseInt(e.clientY - e.offsetY);
+        let ctx = canvas.getContext('2d')
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
+        this.shapes.forEach(rect => {
+            ctx.beginPath()
+            ctx.rect(rect.x, rect.y, rect.width, rect.height)
             ctx.fill()
-            debugger
-            if (ctx.isPointInPath(mouseX, mouseY)) {
-                console.log('hey')
-            } else {
-                console.log('nope', mouseX, mouseY)
+            ctx.fillStyle = 'green'
+            if(this.isMouseInShape(startX, startY, rect)) {
+                ctx.fillStyle = 'red'
             }
         })
+    }
+        // this.shapes.forEach(shape => {
+        //     var x = e.pageX - (canvas.offsetLeft + canvas.clientLeft);
+        //     var y = e.pageY - (canvas.offsetTop + canvas.clientTop);
+        //     let mouseX = (e.clientX - canvas.offsetLeft)
+        //     let mouseY = (e.clientY - canvas.offsetTop)
+        //     let ctx = canvas.getContext('2d')
+        //     ctx.clearRect(0, 0, canvas.width, canvas.height)
+        //     ctx.beginPath()
+        //     ctx.rect(shape.x, shape.y, shape.width, shape.height)
+        //     ctx.fill()
+        //     ctx.closePath()
+        //     if (ctx.isPointInPath(e.clientX, e.clientY)) {
+        //         console.log('hey')
+        //     } else {
+        //         console.log('nope', mouseX, mouseY)
+        //     }
+        // })
         // this.shapes.forEach(shape => {  
         //     if (y > shape.top && y < shape.top + shape.height && x > shape.left && x < shape.left + shape.width) {
         //         console.log("hey")
         //     }
         // })
-    }
+    // }
     
     render() {
         this.shapes.push({
             x: 10,
             y: 10,
             width: 50,
-            height: 75
+            height: 75,
+            name: "Rectangle"
         })
         // var canvasOffset=$("#canvas").offset();
         // var offsetX=canvasOffset.left;

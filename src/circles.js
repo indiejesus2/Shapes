@@ -7,24 +7,55 @@ class Circles {
         this.render()
         this.draw()
         this.attachClickEventListener()
+        this.attachMouseHoverListener()
     }
 
     attachClickEventListener() {
         canvas.addEventListener('click', this.handleOnClick);
     }
 
+    attachMouseHoverListener() {
+        canvas.addEventListener("mouseover", this.handleMouseMove);
+    }
+
+    handleMouseMove = (e) => {
+            let ctx = canvas.getContext('2d')
+            this.circles.forEach(circle => {
+                ctx.beginPath()
+                ctx.arc(circle.x, circle.y, circle.r, circle.sAngle, circle.eAngle)
+                ctx.fill()
+            ctx.closePath()
+
+            if (ctx.isPointInStroke(e.clientX, e.clientY)) {
+                ctx.fillStyle = 'red'
+            }
+        })
+    }
+
+    isMouseInShape(mx, my, shape){
+        var dx = mx - shape.x
+        var dy = my - shape.y
+        if(dx*dx+dy*dy>shape.r*shape.r) {
+            return true
+        }
+    }
+
     handleOnClick = (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+        const startX = parseInt(e.clientX-e.offsetX);
+        const startY = parseInt(e.clientY - e.offsetY);
         let ctx = canvas.getContext('2d')
         ctx.clearRect(0, 0, canvas.width, canvas.height)
-        const round = new Path2D()
         this.circles.forEach(circle => {
-            round.arc(circle.x, circle.y, circle.r, circle.sAngle, circle.eAngle)
-            ctx.fill(round)
-            debugger
-        if (ctx.isPointInPath(round, e.offsetX, e.offsetY)) {
-            ctx.fillStyle = 'red'
-        }
-    })
+            ctx.beginPath()
+            ctx.arc(circle.x, circle.y, circle.r, circle.sAngle, circle.eAngle)
+            ctx.fill()
+            ctx.fillStyle = 'green'
+            if(this.isMouseInShape(startX, startY, circle)) {
+                ctx.fillStyle = 'red'
+            }
+        })
     }
 
     render() {
@@ -33,7 +64,8 @@ class Circles {
             y: 50,
             r: 25,
             sAngle: 0,
-            eAngle: 2 * Math.PI
+            eAngle: 2 * Math.PI,
+            name: "Circle"
         })
     }
     
@@ -43,6 +75,7 @@ class Circles {
         this.circles.forEach(circle => {
             round.arc(circle.x, circle.y, circle.r, circle.sAngle, circle.eAngle)
             ctx.fill(round)
+            ctx.fillStyle = 'green'
         })
     }
     
