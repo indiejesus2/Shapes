@@ -25,17 +25,13 @@ class Rectangles {
     }
 
     handleOnClick = (e) => {
-        e.preventDefault()
-        e.stopPropagation()
-        const startX = e.offsetX;
-        const startY = e.offsetY;
         let ctx = canvas.getContext('2d')
         ctx.clearRect(0, 0, canvas.width, canvas.height)
         this.shapes.forEach(rect => {
             ctx.rect(rect.x, rect.y, rect.width, rect.height)
             ctx.fill()
             ctx.fillStyle = 'green'
-            if(ctx.isPointInPath(startX, startY)) {
+            if(ctx.isPointInPath(e.offsetX, e.offsetY)) {
                 new Forms()
             }
         })
@@ -66,8 +62,8 @@ class Rectangles {
     
     render() {
         this.shapes.push({
-            x: 10,
-            y: 10,
+            x: 100,
+            y: 100,
             width: 50,
             height: 75,
             name: "Rectangle"

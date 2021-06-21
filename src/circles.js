@@ -10,42 +10,47 @@ class Circles {
         this.attachMouseHoverListener()
     }
 
+    randomColor() {
+        var randomColor = Math.floor(Math.random()*16777215).toString(16);
+        return randomColor
+    }
+    
     attachClickEventListener() {
         canvas.addEventListener('click', this.handleOnClick);
     }
-
+    
     attachMouseHoverListener() {
-        canvas.addEventListener("mouseover", this.handleMouseMove);
+        canvas.addEventListener('mouseover', this.handleMouseMove);
     }
 
+    // attachMouseOutListener() {
+    //     canvas.addEventListener('mouseout', function(e) {
+    //         this.circles.forEach(circle => {
+    //             let ctx = canvas.getContext('2d')
+    //             ctx.clearRect(0, 0, canvas.width, canvas.height)
+    //                 ctx.arc(circle.x, circle.y, circle.r, circle.sAngle, circle.eAngle)
+    //                 ctx.fillStyle = "green"
+    //                 ctx.fill()
+    //         })    
+    //     })
+    // }
+    
     handleMouseMove = (e) => {
+        let mouseX = e.clientX - e.offsetX
+        let mouseY = e.clientY - e.offsetY
+        this.circles.forEach(circle => {
             let ctx = canvas.getContext('2d')
-            this.circles.forEach(circle => {
-                ctx.beginPath()
                 ctx.arc(circle.x, circle.y, circle.r, circle.sAngle, circle.eAngle)
+                if (ctx.isPointInPath(mouseX, mouseY)) {
+                    ctx.fillStyle = "red"
+                } else {
+                    ctx.fillStyle = 'green'
+                }
                 ctx.fill()
-            ctx.closePath()
-
-            if (ctx.isPointInStroke(e.clientX, e.clientY)) {
-                ctx.fillStyle = 'red'
-            }
         })
     }
 
-    isMouseInShape(mx, my, shape){
-        var dx = mx - shape.x
-        var dy = my - shape.y
-        debugger
-        if((dx*dx) + (dy*dy) < shape.r*shape.r) {
-            return true
-        }
-    }
-
     handleOnClick = (e) => {
-        e.preventDefault()
-        e.stopPropagation()
-        const startX = e.offsetX
-        const startY = e.offsetY
         let ctx = canvas.getContext('2d')
         ctx.clearRect(0, 0, canvas.width, canvas.height)
         this.circles.forEach(circle => {
@@ -53,8 +58,8 @@ class Circles {
             ctx.arc(circle.x, circle.y, circle.r, circle.sAngle, circle.eAngle)
             ctx.fill()
             ctx.fillStyle = 'green'
-            if(ctx.isPointInPath(startX, startY)) {
-                new Forms()
+            if(ctx.isPointInPath(e.offsetX, e.offsetY)) {
+                new Forms(circle)
             }
         })
     }
@@ -66,17 +71,17 @@ class Circles {
             r: 25,
             sAngle: 0,
             eAngle: 2 * Math.PI,
+            color: this.randomColor(),
             name: "Circle"
         })
     }
     
     draw() {
         let ctx = canvas.getContext('2d')
-        const round = new Path2D()
         this.circles.forEach(circle => {
-            round.arc(circle.x, circle.y, circle.r, circle.sAngle, circle.eAngle)
-            ctx.fill(round)
-            ctx.fillStyle = 'green'
+            ctx.arc(circle.x, circle.y, circle.r, circle.sAngle, circle.eAngle)
+            ctx.fillStyle = `#${circle.color}`
+            ctx.fill()
         })
     }
     
