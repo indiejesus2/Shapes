@@ -27,17 +27,16 @@ class Rectangles {
     handleOnClick = (e) => {
         e.preventDefault()
         e.stopPropagation()
-        const startX = parseInt(e.clientX-e.offsetX);
-        const startY = parseInt(e.clientY - e.offsetY);
+        const startX = e.offsetX;
+        const startY = e.offsetY;
         let ctx = canvas.getContext('2d')
         ctx.clearRect(0, 0, canvas.width, canvas.height)
         this.shapes.forEach(rect => {
-            ctx.beginPath()
             ctx.rect(rect.x, rect.y, rect.width, rect.height)
             ctx.fill()
             ctx.fillStyle = 'green'
-            if(this.isMouseInShape(startX, startY, rect)) {
-                ctx.fillStyle = 'red'
+            if(ctx.isPointInPath(startX, startY)) {
+                new Forms()
             }
         })
     }

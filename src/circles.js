@@ -35,7 +35,8 @@ class Circles {
     isMouseInShape(mx, my, shape){
         var dx = mx - shape.x
         var dy = my - shape.y
-        if(dx*dx+dy*dy>shape.r*shape.r) {
+        debugger
+        if((dx*dx) + (dy*dy) < shape.r*shape.r) {
             return true
         }
     }
@@ -43,8 +44,8 @@ class Circles {
     handleOnClick = (e) => {
         e.preventDefault()
         e.stopPropagation()
-        const startX = parseInt(e.clientX-e.offsetX);
-        const startY = parseInt(e.clientY - e.offsetY);
+        const startX = e.offsetX
+        const startY = e.offsetY
         let ctx = canvas.getContext('2d')
         ctx.clearRect(0, 0, canvas.width, canvas.height)
         this.circles.forEach(circle => {
@@ -52,8 +53,8 @@ class Circles {
             ctx.arc(circle.x, circle.y, circle.r, circle.sAngle, circle.eAngle)
             ctx.fill()
             ctx.fillStyle = 'green'
-            if(this.isMouseInShape(startX, startY, circle)) {
-                ctx.fillStyle = 'red'
+            if(ctx.isPointInPath(startX, startY)) {
+                new Forms()
             }
         })
     }
