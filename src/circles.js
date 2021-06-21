@@ -7,12 +7,23 @@ class Circles {
         this.render()
         this.draw()
         this.attachClickEventListener()
-        this.attachMouseHoverListener()
+        // this.constructor.handleColor()
+        // this.attachMouseHoverListener()
     }
 
     randomColor() {
         var randomColor = Math.floor(Math.random()*16777215).toString(16);
         return randomColor
+    }
+
+    static handleColor(shape, shapes=this.circles) {
+        debugger
+        let circle = shapes.find(circle => circle.id === shape.parentElement.id)
+        let ctx = canvas.getContext('2d')
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
+        ctx.arc(circle.x, circle.y, circle.r, circle.sAngle, circle.eAngle)
+        ctx.fillStyle = `#${circle.color}`
+        ctx.fill()
     }
     
     attachClickEventListener() {
@@ -27,7 +38,7 @@ class Circles {
     //     canvas.addEventListener('mouseout', function(e) {
     //         this.circles.forEach(circle => {
     //             let ctx = canvas.getContext('2d')
-    //             ctx.clearRect(0, 0, canvas.width, canvas.height)
+                // ctx.clearRect(0, 0, canvas.width, canvas.height)
     //                 ctx.arc(circle.x, circle.y, circle.r, circle.sAngle, circle.eAngle)
     //                 ctx.fillStyle = "green"
     //                 ctx.fill()
@@ -66,6 +77,7 @@ class Circles {
 
     render() {
         this.circles.push({
+            id: this.circles.length + 1,
             x: 50,
             y: 50,
             r: 25,

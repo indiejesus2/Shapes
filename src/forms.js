@@ -1,14 +1,23 @@
 class Forms {
     static container = document.getElementById('form')
-
+    
     constructor(shape) {
         this.shape = shape
         this.render()
+        this.attachColorChange()
+    }
+    
+    attachColorChange() {
+        let colorPicker = document.querySelector("#color");
+        colorPicker.addEventListener("input",function() {
+            Circles.handleColor(this)
+        })
     }
 
     render() {
         const form = document.createElement('form');
         form.className = 'edit-shape';
+        form.id = this.shape.id
         form.innerHTML = this.renderInnerHTML(this.shape);
         this.form = form
         this.constructor.container.append(form)
