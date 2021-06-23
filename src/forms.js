@@ -3,15 +3,8 @@ class Forms {
     
     constructor(shape) {
         this.shape = shape
-        this.render()
-        this.attachColorChange()
-    }
-    
-    attachColorChange() {
-        let colorPicker = document.querySelector("#color");
-        colorPicker.addEventListener("input",function() {
-            Circles.handleColor(this)
-        })
+            this.render()
+        // this.attachColorChange()
     }
 
     render() {
