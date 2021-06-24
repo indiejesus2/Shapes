@@ -102,7 +102,7 @@ class Circles {
     
     draw() {
         this.ctx.save()
-        this.ctx.clearRect(0, 0, canvas.width, canvas.height)
+        // this.ctx.clearRect(0, 0, canvas.width, canvas.height)
         this.circles.forEach(circle => {
             this.ctx.beginPath();
             this.ctx.fillStyle = `#${circle.color}`

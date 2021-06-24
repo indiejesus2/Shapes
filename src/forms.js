@@ -22,7 +22,7 @@ class Forms {
             <button>${shape.name}</button>
             <input type="range" name="width" id="width" min='1' max="500" value="${shape.width}" />
             <input type="range" name="height" id="height" min='1' max="500" value="${shape.height}" />
-            <input type="color" name="color" id="color" value='#${shape.color}' />
+            <input type="color" name="color" id="color" value='${shape.color}' />
         `
     }
 

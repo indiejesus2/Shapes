@@ -3,9 +3,10 @@ class Rectangles {
     static canvas = document.getElementById("canvas")
 
 
-    constructor() {
-        this.shapes = [];
-        this.render()
+    constructor(shapes) {
+        this.shapes = shapes;
+        this.ctx = canvas.getContext('2d')
+        // this.render()
         this.draw()
         this.attachClickEventListener()
     }
@@ -25,14 +26,12 @@ class Rectangles {
     }
 
     handleOnClick = (e) => {
-        let ctx = canvas.getContext('2d')
-        ctx.clearRect(0, 0, canvas.width, canvas.height)
         this.shapes.forEach(rect => {
-            ctx.rect(rect.x, rect.y, rect.width, rect.height)
-            ctx.fill()
-            ctx.fillStyle = 'green'
-            if(ctx.isPointInPath(e.offsetX, e.offsetY)) {
-                new Forms()
+            if(this.isMouseInShape(e.offsetX, e.offsetY, rect)) {
+                if (!document.getElementById(rect.id)) {
+                    console.log('hey')
+                    new Forms(rect)
+                }
             }
         })
     }
@@ -41,7 +40,7 @@ class Rectangles {
         //     var y = e.pageY - (canvas.offsetTop + canvas.clientTop);
         //     let mouseX = (e.clientX - canvas.offsetLeft)
         //     let mouseY = (e.clientY - canvas.offsetTop)
-        //     let ctx = canvas.getContext('2d')
+        //     let this.ctx = canvas.getContext('2d')
         //     ctx.clearRect(0, 0, canvas.width, canvas.height)
         //     ctx.beginPath()
         //     ctx.rect(shape.x, shape.y, shape.width, shape.height)
@@ -77,11 +76,9 @@ class Rectangles {
     }
     
     draw() {
-    let ctx = canvas.getContext('2d')
-
         this.shapes.forEach(shape => {
-            ctx.rect(shape.x, shape.y, shape.width, shape.height)
-            ctx.fill()
+            this.ctx.fillStyle = `#${shape.color}`
+            this.ctx.fillRect(shape.x, shape.y, shape.width, shape.height)
         })
         
     }
