@@ -19,8 +19,8 @@ class Buttons {
         if (e.target.id == "add_rectangle") {
             this.shapes.push({
                 id: this.shapes.length + 1,
-                x: (Math.random() * (canvas.width - 50)),
-                y: (Math.random() * (canvas.height - 75)),
+                x: parseInt(Math.random() * (canvas.width - 50)),
+                y: parseInt(Math.random() * (canvas.height - 75)),
                 width: 50,
                 height: 75,
                 color: this.randomColor(),
@@ -30,8 +30,8 @@ class Buttons {
         } else if (e.target.id == "add_circle") {
             this.shapes.push({
                 id: this.shapes.length + 1,
-                x: (Math.random() * (canvas.width - 25)),
-                y: (Math.random() * (canvas.height - 25)),
+                x: parseInt(Math.random() * (canvas.width - 25)),
+                y: parseInt(Math.random() * (canvas.height - 25)),
                 r: 25,
                 sAngle: 0,
                 eAngle: 2 * Math.PI,

@@ -6,25 +6,60 @@ class Toys {
     constructor(toys) {
         this.toys = toys;
         this.ctx = canvas.getContext('2d')
-        // this.render()
         this.draw()
         this.attachClickEventListener()
+        this.attachMouseHoverListener()
+        this.attachMouseDownListener()
     }
 
-    attachColorChange() {
-        let colorPicker = document.getElementsByName("color");
-        colorPicker.addEventListener("input", this.handleColor);
+    attachColorChange(toy) {
+        let colors = document.getElementsByName("color");
+        colors.forEach(color => {
+            if (color.parentElement.id == toy.id) {
+                color.addEventListener("input", this.handleColor);
+            }
+        })
     }
 
     handleColor = (e) => {
         this.toys.forEach(function(toy) {
-            debugger
             if (toy.id === parseInt(e.target.parentElement.id)) {
-                debugger
                 toy.color = e.target.value
             }
         })
         this.draw()
+    }
+
+    handleMouseMove = (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+        this.toys.forEach(toy => {
+            if (this.isMouseInShape(e.offsetX, e.offsetY, toy)) {
+                this.ctx.beginPath();
+                this.ctx.strokeStyle = `gold`
+                this.ctx.arc(toy.x, toy.y, toy.r*2, toy.sAngle, toy.eAngle, true)
+                this.ctx.closePath()
+                this.ctx.fill()
+            }
+        })
+    }
+
+    handleMove = (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+        this.toys.forEach(toy => {
+            if (this.isMouseInShape(e.offsetX, e.offSetY, toy)) {
+                debugger
+            }
+        })
+    }
+
+    attachMouseHoverListener() {
+        canvas.addEventListener('mouseover', this.handleMouseMove);
+    }
+    
+    attachMouseDownListener() {
+        canvas.addEventListener('mousedown', this.handleMove);
     }
 
     attachClickEventListener() {
@@ -54,7 +89,7 @@ class Toys {
             if(this.isMouseInShape(e.offsetX, e.offsetY, toy)) {
                 if (!document.getElementById(toy.id)) {
                     new Forms(toy)
-                    this.attachColorChange()
+                    this.attachColorChange(toy)
                 }
             }
         })
