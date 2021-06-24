@@ -8,16 +8,20 @@ class Forms {
     }
 
     render() {
-        const form = document.createElement('form');
-        form.className = 'edit-shape';
-        form.id = this.shape.id
-        if (this.shape.name == "Rectangle") {
-            form.innerHTML = this.renderRectHTML(this.shape);
+        if (document.findElementsByName('form')) {
+            debugger
         } else {
-            form.innerHTML = this.renderArcHTML(this.shape);
+            const form = document.createElement('form');
+            form.className = 'edit-shape';
+            form.id = this.shape.id
+            if (this.shape.name == "Rectangle") {
+                form.innerHTML = this.renderRectHTML(this.shape);
+            } else {
+                form.innerHTML = this.renderArcHTML(this.shape);
+            }
+            this.form = form
+            this.constructor.container.append(form)
         }
-        this.form = form
-        this.constructor.container.append(form)
     }
 
     renderRectHTML = (shape) => {

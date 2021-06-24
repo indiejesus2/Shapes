@@ -24,7 +24,8 @@ class Buttons {
                 width: 50,
                 height: 75,
                 color: this.randomColor(),
-                name: "Rectangle"
+                name: "Rectangle",
+                dragging: false
             })
             new Toys(this.shapes)
         } else if (e.target.id == "add_circle") {
@@ -36,7 +37,8 @@ class Buttons {
                 sAngle: 0,
                 eAngle: 2 * Math.PI,
                 color: this.randomColor(),
-                name: "Circle"
+                name: "Circle",
+                dragging: false
             })
             new Toys(this.shapes)
         }

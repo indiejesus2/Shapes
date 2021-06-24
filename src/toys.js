@@ -6,10 +6,14 @@ class Toys {
     constructor(toys) {
         this.toys = toys;
         this.ctx = canvas.getContext('2d')
+        this.startX
+        this.startY
         this.draw()
         this.attachClickEventListener()
         this.attachMouseHoverListener()
         this.attachMouseDownListener()
+        this.attachMouseMoveListener()
+        this.attachMouseUpListener()
     }
 
     attachColorChange(toy) {
@@ -30,36 +34,70 @@ class Toys {
         this.draw()
     }
 
-    handleMouseMove = (e) => {
+    mouseOver = (e) => {
         e.preventDefault()
         e.stopPropagation()
-        this.toys.forEach(toy => {
-            if (this.isMouseInShape(e.offsetX, e.offsetY, toy)) {
-                this.ctx.beginPath();
-                this.ctx.strokeStyle = `gold`
-                this.ctx.arc(toy.x, toy.y, toy.r*2, toy.sAngle, toy.eAngle, true)
-                this.ctx.closePath()
-                this.ctx.fill()
-            }
-        })
-    }
-
-    handleMove = (e) => {
-        e.preventDefault()
-        e.stopPropagation()
-        this.toys.forEach(toy => {
-            if (this.isMouseInShape(e.offsetX, e.offSetY, toy)) {
+        for (let i = 0; i<this.toys.length;i++) {
+            if(this.isMouseInShape(e.offsetX, e.offsetY, this.toys[i])) {
                 debugger
             }
-        })
+        }
+        // this.toys.forEach(toy => {
+        //     if (this.isMouseInShape(e.offsetX, e.offsetY, toy)) {
+        //         this.ctx.beginPath();
+        //         this.ctx.strokeStyle = `gold`
+        //         this.ctx.arc(toy.x, toy.y, toy.r*2, toy.sAngle, toy.eAngle, true)
+        //         this.ctx.closePath()
+        //         this.ctx.fill()
+        //     }
+        // })
+    }
+
+    mouseDown = (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+        for (let i = 0; i<this.toys.length;i++) {
+            if(this.isMouseInShape(e.offsetX, e.offsetY, this.toys[i])) {
+                this.startX=e.offsetX
+                this.startY=e.offsetY
+                this.toys[i].dragging = true
+            }
+        }
+    }
+
+    mouseMove = (e) => {
+        let dx = e.offsetX - this.startX
+        let dy = e.offsetY - this.startY
+        for (let i=0;i<this.toys.length;i++) {
+            let toy = this.toys[i]
+            if (toy.dragging == true) {
+                toy.x+=dx
+                toy.y+=dy
+            }
+        }
+        this.draw()
+        this.startX=e.offsetX
+        this.startY=e.offsetY
+    }
+
+    mouseUp = (e) => {
+        this.toys.forEach(toy => toy.dragging = false)
     }
 
     attachMouseHoverListener() {
-        canvas.addEventListener('mouseover', this.handleMouseMove);
+        canvas.addEventListener('mouseover', this.mouseOver);
     }
     
     attachMouseDownListener() {
-        canvas.addEventListener('mousedown', this.handleMove);
+        canvas.addEventListener('mousedown', this.mouseDown);
+    }
+    
+    attachMouseUpListener() {
+        canvas.addEventListener('mouseup', this.mouseUp);
+    }
+
+    attachMouseMoveListener() {
+        canvas.addEventListener('mousemove', this.mouseMove);
     }
 
     attachClickEventListener() {
