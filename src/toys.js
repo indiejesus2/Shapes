@@ -10,7 +10,6 @@ class Toys {
         this.attachMouseDownListener()
         this.attachMouseMoveListener()
         this.attachMouseUpListener()
-        // this.draw()
     }
 
     randomColor() {
@@ -41,15 +40,14 @@ class Toys {
         let width = document.getElementsByName("width")
         let radius = document.getElementsByName('radius')
         for (let i = 0; i < toys.length; i++) {
-            if (toys[i].name == "Rectangle") {
-                height[i].addEventListener("input", this.handleHeight)
-                width[i].addEventListener("input", this.handleWidth)
-            } else {
-                radius[i].addEventListener("input", this.handleRadius)
+            if (toys[i].selected == true) {
+                if (toys[i].name == "Rectangle") {
+                    height[i].addEventListener("input", this.handleHeight)
+                    width[i].addEventListener("input", this.handleWidth)
+                } else {
+                    radius[i].addEventListener("input", this.handleRadius)
+                }
             }
-            // if (forms[i].parentElement.id == this.shape.id ) {
-            //     debugger
-            // }
         }
     }
 
@@ -60,6 +58,7 @@ class Toys {
             }
         })
         this.draw()
+        new Forms()
     }
 
     handleWidth = (e) => {
@@ -69,6 +68,7 @@ class Toys {
             }
         })
         this.draw()
+        new Forms()
     }
 
     handleRadius = (e) => {
@@ -77,6 +77,7 @@ class Toys {
                 toy.r = e.target.value
             }
         })
+        new Forms()
         this.draw()
     }
 
@@ -114,6 +115,7 @@ class Toys {
             }
         }
         this.draw()
+        new Forms()
         this.startX=e.offsetX
         this.startY=e.offsetY
 
@@ -165,7 +167,8 @@ class Toys {
         toys.forEach(toy => {
             if(this.isMouseInShape(e.offsetX, e.offsetY, toy)) {
                 if (!document.getElementById(toy.id)) {
-                    new Forms(toy)
+                    toy.selected = true
+                    new Forms()
                     this.attachColorChange(toy)
                     this.attachChange()
                 }

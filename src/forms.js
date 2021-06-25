@@ -1,9 +1,14 @@
 class Forms {
     static container = document.getElementById('toy-form')
     
-    constructor(shape) {
-        this.shape = shape
-        this.render()
+    constructor() {
+        this.clear()
+        toys.forEach(toy => {
+            if (toy.selected == true) {
+                this.shape = toy
+                this.render()
+            }
+        })
     }
 
 
@@ -61,8 +66,13 @@ class Forms {
         `
     }
 
-    static delete() {
-
+    clear() {
+        let forms = document.getElementsByClassName('edit-shape')
+        let i = 0
+        while (forms.length > 0) {
+            forms[i].remove()
+            i++
+        }
     }
 
 }
