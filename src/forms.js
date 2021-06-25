@@ -1,17 +1,23 @@
 class Forms {
-    static container = document.getElementById('form')
+    static container = document.getElementById('toy-form')
     
     constructor(shape) {
         this.shape = shape
         this.render()
-        // this.attachColorChange()
     }
 
+
+
     render() {
-        if (document.findElementsByName('form')) {
-            debugger
+        const form = document.createElement('form');
+        let exist = document.getElementsByClassName("edit-shape")
+        if (exist.length > 0 && parseInt(exist[0].id == this.shape.id)) {
+            if (this.shape.name == "Rectangle") {
+                form.innerHTML = this.renderRectHTML(this.shape);
+            } else {
+                form.innerHTML = this.renderArcHTML(this.shape);
+            }
         } else {
-            const form = document.createElement('form');
             form.className = 'edit-shape';
             form.id = this.shape.id
             if (this.shape.name == "Rectangle") {
@@ -49,7 +55,7 @@ class Forms {
             <label>Center Y</label>
             <p>${shape.y}</p>
             <label>Radius</label>
-            <input type="range" name="height" id="height" min='1' max="500" value="${shape.r}" />
+            <input type="range" name="radius" id="radius" min='1' max="500" value="${shape.r}" />
             <label>Color</label>
             <input type="color" name="color" id="color" value='${shape.color}' />
         `

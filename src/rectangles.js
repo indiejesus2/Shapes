@@ -1,40 +1,36 @@
-class Rectangles {
-    static container = document.getElementById('canvas_container')
-    static canvas = document.getElementById("canvas")
+class Rectangles extends Toys {
 
-
-    constructor(shapes) {
-        this.shapes = shapes;
-        this.ctx = canvas.getContext('2d')
-        // this.render()
+    constructor() {
+        super()
+        this.render()
         this.draw()
-        this.attachClickEventListener()
+        // this.attachClickEventListener()
     }
 
-    attachClickEventListener() {
-        canvas.addEventListener("click", this.handleOnClick);
-    }
+    // attachClickEventListener() {
+    //     canvas.addEventListener("click", this.handleOnClick);
+    // }
 
-    isMouseInShape(mx, my, shape){
-        var rLeft = shape.x
-        var rRight=shape.x+shape.width;
-        var rTop=shape.y
-        var rBott=rTop+shape.height
-        if(mx>rLeft && mx<rRight && my>rTop && my<rBott) {
-            return true
-        }
-    }
+    // isMouseInShape(mx, my, shape){
+    //     var rLeft = shape.x
+    //     var rRight=shape.x+shape.width;
+    //     var rTop=shape.y
+    //     var rBott=rTop+shape.height
+    //     if(mx>rLeft && mx<rRight && my>rTop && my<rBott) {
+    //         return true
+    //     }
+    // }
 
-    handleOnClick = (e) => {
-        this.shapes.forEach(rect => {
-            if(this.isMouseInShape(e.offsetX, e.offsetY, rect)) {
-                if (!document.getElementById(rect.id)) {
-                    console.log('hey')
-                    new Forms(rect)
-                }
-            }
-        })
-    }
+    // handleOnClick = (e) => {
+    //     this.shapes.forEach(rect => {
+    //         if(this.isMouseInShape(e.offsetX, e.offsetY, rect)) {
+    //             if (!document.getElementById(rect.id)) {
+    //                 console.log('hey')
+    //                 new Forms(rect)
+    //             }
+    //         }
+    //     })
+    // }
         // this.shapes.forEach(shape => {
         //     var x = e.pageX - (canvas.offsetLeft + canvas.clientLeft);
         //     var y = e.pageY - (canvas.offsetTop + canvas.clientTop);
@@ -60,13 +56,17 @@ class Rectangles {
     // }
     
     render() {
-        this.shapes.push({
-            x: 100,
-            y: 100,
+        toys.push({
+            id: toys.length + 1,
+            x: parseInt(Math.random() * (canvas.width - 50)),
+            y: parseInt(Math.random() * (canvas.height - 75)),
             width: 50,
             height: 75,
-            name: "Rectangle"
+            color: this.randomColor(),
+            name: "Rectangle",
+            dragging: false
         })
+        // Toys.draw()
         // var canvasOffset=$("#canvas").offset();
         // var offsetX=canvasOffset.left;
         // var offsetY=canvasOffset.top;
@@ -75,13 +75,13 @@ class Rectangles {
         // var isDragging=false;
     }
     
-    draw() {
-        this.shapes.forEach(shape => {
-            this.ctx.fillStyle = `#${shape.color}`
-            this.ctx.fillRect(shape.x, shape.y, shape.width, shape.height)
-        })
+    // draw() {
+    //     this.shapes.forEach(shape => {
+    //         this.ctx.fillStyle = `#${shape.color}`
+    //         this.ctx.fillRect(shape.x, shape.y, shape.width, shape.height)
+    //     })
         
-    }
+    // }
 
 }
 
