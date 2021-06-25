@@ -1,15 +1,19 @@
 class Toys {
     static container = document.getElementById('canvas_container')
     static canvas = document.getElementById("canvas")
+    static height = document.getElementsByName("height")
+        static width = document.getElementsByName("width")
+        static radius = document.getElementsByName('radius')
 
     constructor() {
         this.startX
         this.startY
         this.attachClickEventListener()
-        this.attachMouseHoverListener()
+        // this.attachMouseHoverListener()
         this.attachMouseDownListener()
         this.attachMouseMoveListener()
         this.attachMouseUpListener()
+        this.draw()
     }
 
     randomColor() {
@@ -35,20 +39,15 @@ class Toys {
         this.draw()
     }
 
-    attachChange() {
-        let height = document.getElementsByName("height")
-        let width = document.getElementsByName("width")
-        let radius = document.getElementsByName('radius')
-        for (let i = 0; i < toys.length; i++) {
-            if (toys[i].selected == true) {
-                if (toys[i].name == "Rectangle") {
-                    height[i].addEventListener("input", this.handleHeight)
-                    width[i].addEventListener("input", this.handleWidth)
+    attachChange(toy) {
+            if (toy.selected == true) {
+                if (toy.name == "Rectangle") {
+                    height.addEventListener("input", this.handleHeight)
+                    width.addEventListener("input", this.handleWidth)
                 } else {
-                    radius[i].addEventListener("input", this.handleRadius)
+                    radius.addEventListener("input", this.handleRadius)
                 }
             }
-        }
     }
 
     handleHeight = (e) => {
@@ -96,8 +95,8 @@ class Toys {
         e.stopPropagation()
         for (let i = 0; i<toys.length;i++) {
             if(this.isMouseInShape(e.offsetX, e.offsetY, toys[i])) {
-                this.startX=e.offsetX
-                this.startY=e.offsetY
+                this.startX=e.clientX - e.offsetX
+                this.startY=e.clientY - e.offsetY
                 toys[i].dragging = true
             }
         }
@@ -111,13 +110,12 @@ class Toys {
             if (toy.dragging == true) {
                 toy.x+=dx
                 toy.y+=dy
-                // new Forms(toy)
+                new Forms()
             }
         }
         this.draw()
-        new Forms()
-        this.startX=e.offsetX
-        this.startY=e.offsetY
+        this.startX=e.clientX - e.offsetX
+        this.startY=e.clientY - e.offsetY
 
     }
 
@@ -170,7 +168,7 @@ class Toys {
                     toy.selected = true
                     new Forms()
                     this.attachColorChange(toy)
-                    this.attachChange()
+                    this.attachChange(toy)
                 }
             }
         })

@@ -7,11 +7,27 @@ class Forms {
             if (toy.selected == true) {
                 this.shape = toy
                 this.render()
+                this.attachDeleteEventListener()
             }
         })
     }
 
-
+    attachDeleteEventListener() {
+        let form = document.getElementById(this.shape.id)
+        let remove = form.firstElementChild
+        remove.addEventListener("click", function(e) {
+            e.preventDefault()
+            const newToys = toys.filter(toy => {
+                if (toy.id != parseInt(this.form.id)) {
+                    return toy
+                }
+            })
+            debugger
+            toys = newToys
+            new Toys()
+            new Forms()
+        })
+    }
 
     render() {
         const form = document.createElement('form');
@@ -38,7 +54,7 @@ class Forms {
     renderRectHTML = (shape) => {
         return `
             <button>Delete</button>
-            <button>${shape.name}</button>
+            <p>${shape.name}</p>
             <label>Center X</label>
             <p>${shape.x}</p>
             <label>Center Y</label>
@@ -54,7 +70,7 @@ class Forms {
     renderArcHTML = (shape) => {
         return `
             <button>Delete</button>
-            <button>${shape.name}</button>
+            <p>${shape.name}</p>
             <label>Center X</label>
             <p>${parseInt(shape.x)}</p>
             <label>Center Y</label>
