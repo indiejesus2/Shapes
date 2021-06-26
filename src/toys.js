@@ -8,7 +8,6 @@ class Toys {
         this.startY
         this.draw()
         this.attachClickEventListener()
-
         // this.attachMouseEnterListener()
         this.attachMouseDownListener()
         this.attachMouseMoveListener()
@@ -90,31 +89,37 @@ class Toys {
     }
 
     mouseDown = (e) => {
-        // e.preventDefault()
-        // e.stopPropagation()
+        e.preventDefault()
+        e.stopImmediatePropagation()
+        var mx = e.clientX - e.offsetX
+        var my = e.clientY - e.offsetY
         for (let i = 0; i<toys.length;i++) {
-            if(this.isMouseInShape(e.offsetX, e.offsetY, toys[i])) {
-                this.startX=e.clientX - e.offsetX
-                this.startY=e.clientY - e.offsetY
+            if(this.isMouseInShape(e.offsetX, e.offsetY, toys[i]) || toys[i].selection == true) {
                 toys[i].dragging = true
             }
         }
+        this.startX=e.offsetX
+        this.startY=e.offsetY
     }
-
+    
     mouseMove = (e) => {
-        let dx = e.offsetX - this.startX
-        let dy = e.offsetY - this.startY
+        e.preventDefault()
+        e.stopImmediatePropagation()
+        var mx = e.offsetX
+        var my = e.offsetY
+        let dx = mx - this.startX
+        let dy = my - this.startY
         for (let i=0;i<toys.length;i++) {
             let toy = toys[i]
             if (toy.dragging == true) {
                 toy.x+=dx
                 toy.y+=dy
-                new Forms()
             }
         }
         this.draw()
-        this.startX=e.clientX - e.offsetX
-        this.startY=e.clientY - e.offsetY
+        new Forms()
+        this.startX=mx
+        this.startY=my
     }
 
     mouseUp = (e) => {
@@ -155,7 +160,6 @@ class Toys {
                 }
                 new Forms()
                 this.draw()
-
             }
         })
     }
