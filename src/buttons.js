@@ -1,15 +1,14 @@
 class Buttons {
-    static canvas = document.getElementById("canvas")
 
     constructor() {
-        this.attachClickEventListener()
+        this.attachNewShapeListener()
     }
 
-    attachClickEventListener() {
-        document.addEventListener("click", this.handleOnClick);
+    attachNewShapeListener() {
+        document.addEventListener("click", this.handleNewShape);
     }
-
-    handleOnClick = (e) => {
+    
+    handleNewShape = (e) => {
         if (e.target.id == "add_rectangle") {
             new Rectangles()
         } else if (e.target.id == "add_circle") {

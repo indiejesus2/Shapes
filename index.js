@@ -1,5 +1,5 @@
 // const ctx = Canvas.context()
-container = document.getElementById('canvas_container')
+canvasContainer = document.getElementById('canvas_container')
 canvas = document.getElementById("canvas")
 
 document.addEventListener("DOMContentLoaded", function() {

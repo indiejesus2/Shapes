@@ -1,44 +1,47 @@
-class Forms {
+class Forms extends Toys{
     static container = document.getElementById('toy-form')
     
     constructor() {
+        super()
         this.clear()
         toys.forEach(toy => {
             if (toy.selected == true) {
                 this.shape = toy
                 this.render()
+                this.attachColorChange(toy)
+                this.attachChange(toy)
                 this.attachDeleteEventListener()
             }
         })
     }
 
-    attachDeleteEventListener() {
+    attachDeleteEventListener = (e) => {
         let form = document.getElementById(this.shape.id)
         let remove = form.firstElementChild
-        remove.addEventListener("click", function(e) {
-            e.preventDefault()
-            const newToys = toys.filter(toy => {
-                if (toy.id != parseInt(this.form.id)) {
-                    return toy
-                }
-            })
-            debugger
-            toys = newToys
-            new Toys()
-            new Forms()
+        remove.addEventListener("click", this.handleDeleteShape)
+    }
+    
+    handleDeleteShape = (e) => {
+        e.preventDefault()
+        const newToys = toys.filter(toy => {
+            if (toy.id != parseInt(this.form.id)) {
+                return toy
+            }
         })
+        toys = newToys
+        this.draw()
+        new Forms()
     }
 
     render() {
         const form = document.createElement('form');
-        let exist = document.getElementsByClassName("edit-shape")
-        if (exist.length > 0 && parseInt(exist[0].id == this.shape.id)) {
-            if (this.shape.name == "Rectangle") {
-                form.innerHTML = this.renderRectHTML(this.shape);
-            } else {
-                form.innerHTML = this.renderArcHTML(this.shape);
-            }
-        } else {
+        // if (exist.length > 0 && parseInt(exist[0].id == this.shape.id)) {
+        //     if (this.shape.name == "Rectangle") {
+        //         form.innerHTML = this.renderRectHTML(this.shape);
+        //     } else {
+        //         form.innerHTML = this.renderArcHTML(this.shape);
+        //     }
+        // } else {
             form.className = 'edit-shape';
             form.id = this.shape.id
             if (this.shape.name == "Rectangle") {
@@ -48,7 +51,7 @@ class Forms {
             }
             this.form = form
             this.constructor.container.append(form)
-        }
+        // }
     }
 
     renderRectHTML = (shape) => {
@@ -84,10 +87,8 @@ class Forms {
 
     clear() {
         let forms = document.getElementsByClassName('edit-shape')
-        let i = 0
-        while (forms.length > 0) {
-            forms[i].remove()
-            i++
+        while(forms.length > 0) {
+            forms[0].remove()
         }
     }
 

@@ -1,6 +1,4 @@
 class Toys {
-    static container = document.getElementById('canvas_container')
-    static canvas = document.getElementById("canvas")
     static height = document.getElementsByName("height")
         static width = document.getElementsByName("width")
         static radius = document.getElementsByName('radius')
@@ -8,12 +6,13 @@ class Toys {
     constructor() {
         this.startX
         this.startY
+        this.draw()
         this.attachClickEventListener()
-        // this.attachMouseHoverListener()
+
+        // this.attachMouseEnterListener()
         this.attachMouseDownListener()
         this.attachMouseMoveListener()
         this.attachMouseUpListener()
-        this.draw()
     }
 
     randomColor() {
@@ -84,15 +83,15 @@ class Toys {
         e.preventDefault()
         e.stopPropagation()
         for (let i = 0; i<toys.length;i++) {
-            if(this.isMouseInShape(e.offsetX, e.offsetY, toys[i])) {
-                debugger
+            if(this.isMouseInShape(e.clientX, e.clientY, toys[i])) {
+                console.log("hey")
             }
         }
     }
 
     mouseDown = (e) => {
-        e.preventDefault()
-        e.stopPropagation()
+        // e.preventDefault()
+        // e.stopPropagation()
         for (let i = 0; i<toys.length;i++) {
             if(this.isMouseInShape(e.offsetX, e.offsetY, toys[i])) {
                 this.startX=e.clientX - e.offsetX
@@ -116,15 +115,22 @@ class Toys {
         this.draw()
         this.startX=e.clientX - e.offsetX
         this.startY=e.clientY - e.offsetY
-
     }
 
     mouseUp = (e) => {
         toys.forEach(toy => toy.dragging = false)
     }
 
+    mouseEnter = (e) => {
+        this.attachMouseHoverListener()
+    }
+
+    attachMouseEnterListener() {
+        canvas.addEventListener('mouseenter', this.mouseEnter);
+    }
     attachMouseHoverListener() {
-        canvas.addEventListener('mouseover', this.mouseOver);
+        debugger
+        canvas.addEventListener('mouseenter', this.mouseOver);
     }
     
     attachMouseDownListener() {
@@ -140,11 +146,22 @@ class Toys {
     }
 
     attachClickEventListener() {
-        canvas.addEventListener("click", this.handleOnClick);
+        canvas.addEventListener("click", (e) => {
+            e.preventDefault()
+            e.stopImmediatePropagation()
+            for (let i = 0; i<toys.length;i++) {
+                if(this.isMouseInShape(e.offsetX, e.offsetY, toys[i])) {
+                    toys[i].selected = toys[i].selected == false ? true : false
+                }
+                new Forms()
+                this.draw()
+
+            }
+        })
     }
 
     isMouseInShape(mx, my, toy){
-        if (toy.r) {
+        if (toy.name == "Circle") {
             var dx = mx-toy.x;
             var dy = my-toy.y;
             if(dx**2+dy**2<toy.r*toy.r) {
@@ -162,17 +179,28 @@ class Toys {
     }
 
     handleOnClick = (e) => {
-        toys.forEach(toy => {
-            if(this.isMouseInShape(e.offsetX, e.offsetY, toy)) {
-                if (!document.getElementById(toy.id)) {
-                    toy.selected = true
-                    new Forms()
-                    this.attachColorChange(toy)
-                    this.attachChange(toy)
-                }
+        e.preventDefault()
+        e.stopPropagation()
+        console.log("click")
+        for (let i = 0; i<toys.length;i++) {
+            if(this.isMouseInShape(e.offsetX, e.offsetY, toys[i])) {
+                toys[i].selected = toys[i].selected == false ? true : false
             }
-        })
+            if (toys[i].selected == true) {
+
+                // ctx.stroke() || ctx.strokeRect(toys[i].x, toys[i].y, toys[i].width, toys[i].height)
+            }
+        }
+        this.draw()
+
     }
+        // toys.forEach(toy => {
+        //     } 
+        //     // else {
+        //     //     toy.selected = false
+        //     //     this.draw()
+        //     // }
+        // })
     
     draw() {   
         ctx.clearRect(0, 0, canvas.width, canvas.height)
@@ -183,9 +211,15 @@ class Toys {
                 ctx.arc(toy.x, toy.y, toy.r, toy.sAngle, toy.eAngle, true)
                 ctx.closePath()
                 ctx.fill()
+                if (toy.selected == true) {
+                    ctx.stroke()
+                }
             } else {
                 ctx.fillStyle = `${toy.color}`
                 ctx.fillRect(toy.x, toy.y, toy.width, toy.height)
+                if (toy.selected == true) {
+                    ctx.strokeRect(toy.x, toy.y, toy.width, toy.height)
+                }
             }
         })
         
