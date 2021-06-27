@@ -6,83 +6,97 @@ class Toys {
     constructor() {
         this.startX
         this.startY
+        this.shift = false
         this.draw()
         this.attachClickEventListener()
+        this.attachShiftKeyListener()
         // this.attachMouseEnterListener()
+        this.attachMouseHoverListener()
         this.attachMouseDownListener()
         this.attachMouseMoveListener()
         this.attachMouseUpListener()
+    }
+
+    attachShiftKeyListener() {
+        document.addEventListener('keydown', this.shiftShape)
+    }
+
+    shiftShape = (e) => {
+        if (e.key == "Shift") {
+            this.shift = true
+        }
     }
 
     randomColor() {
         var randomColor = Math.floor(Math.random()*16777215).toString(16);
         return (`#${randomColor}`)
     }
-
+  
     attachColorChange(toy) {
         let colors = document.getElementsByName("color");
         colors.forEach(color => {
-            if (color.parentElement.id == toy.id) {
+            if (color.form.id == toy.id) {
                 color.addEventListener("input", this.handleColor);
             }
         })
     }
-
+    
     handleColor = (e) => {
-        toys.forEach(function(toy) {
-            if (toy.id === parseInt(e.target.parentElement.id)) {
-                toy.color = e.target.value
+        for (let i = 0; i<toys.length;i++) {
+            if (toys[i].id === parseInt(e.target.form.id)) {
+                toys[i].color = e.target.value
             }
-        })
+        }
         this.draw()
     }
 
     attachChange(toy) {
-            if (toy.selected == true) {
-                if (toy.name == "Rectangle") {
-                    height.addEventListener("input", this.handleHeight)
-                    width.addEventListener("input", this.handleWidth)
-                } else {
-                    radius.addEventListener("input", this.handleRadius)
-                }
+        if (toy.selected == true) {
+            if (toy.name == "Rectangle") {
+                height.addEventListener("input", this.handleHeight)
+                width.addEventListener("input", this.handleWidth)
+            } else {
+                radius.addEventListener("input", this.handleRadius)
             }
-    }
+        }
+}
 
     handleHeight = (e) => {
         toys.forEach(toy => {
-            if (toy.id === parseInt(e.target.parentElement.id)) {
+            if (toy.id === parseInt(e.target.form.id)) {
                 toy.height = e.target.value
             }
         })
         this.draw()
-        new Forms()
+        // new Forms()
     }
 
     handleWidth = (e) => {
         toys.forEach(toy => {
-            if (toy.id === parseInt(e.target.parentElement.id)) {
+            if (toy.id === parseInt(e.target.form.id)) {
                 toy.width = e.target.value
             }
         })
         this.draw()
-        new Forms()
     }
 
     handleRadius = (e) => {
         toys.forEach(toy => {
-            if (toy.id === parseInt(e.target.parentElement.id)) {
+            if (toy.id === parseInt(e.target.form.id)) {
                 toy.r = e.target.value
             }
         })
-        new Forms()
         this.draw()
     }
 
     mouseOver = (e) => {
         e.preventDefault()
-        e.stopPropagation()
+        e.stopImmediatePropagation()
+        let mouseX=e.clientX-e.offsetX
+        let mouseY=e.clientY-e.offsetY
         for (let i = 0; i<toys.length;i++) {
-            if(this.isMouseInShape(e.clientX, e.clientY, toys[i])) {
+            // debugger
+            if(this.isMouseInShape(e.offsetX, e.offsetY, toys[i])) {
                 console.log("hey")
             }
         }
@@ -94,7 +108,9 @@ class Toys {
         var mx = e.clientX - e.offsetX
         var my = e.clientY - e.offsetY
         for (let i = 0; i<toys.length;i++) {
-            if(this.isMouseInShape(e.offsetX, e.offsetY, toys[i]) || toys[i].selection == true) {
+            if(this.isMouseInShape(e.offsetX, e.offsetY, toys[i])) {
+                toys[i].dragging = true
+            } else if (toys[i].selected == true) {
                 toys[i].dragging = true
             }
         }
@@ -104,11 +120,9 @@ class Toys {
     
     mouseMove = (e) => {
         e.preventDefault()
-        e.stopImmediatePropagation()
-        var mx = e.offsetX
-        var my = e.offsetY
-        let dx = mx - this.startX
-        let dy = my - this.startY
+        e.stopImmediatePropagation() 
+        let dx = e.offsetX - this.startX
+        let dy = e.offsetY - this.startY
         for (let i=0;i<toys.length;i++) {
             let toy = toys[i]
             if (toy.dragging == true) {
@@ -118,8 +132,8 @@ class Toys {
         }
         this.draw()
         new Forms()
-        this.startX=mx
-        this.startY=my
+        this.startX=e.offsetX
+        this.startY=e.offsetY
     }
 
     mouseUp = (e) => {
@@ -134,7 +148,6 @@ class Toys {
         canvas.addEventListener('mouseenter', this.mouseEnter);
     }
     attachMouseHoverListener() {
-        debugger
         canvas.addEventListener('mouseenter', this.mouseOver);
     }
     
@@ -155,11 +168,20 @@ class Toys {
             e.preventDefault()
             e.stopImmediatePropagation()
             for (let i = 0; i<toys.length;i++) {
+                debugger
                 if(this.isMouseInShape(e.offsetX, e.offsetY, toys[i])) {
                     toys[i].selected = toys[i].selected == false ? true : false
+                    // this.attachColorChange(toys[i])
+                } else if (toys[i].selected == true && this.shift == true) {
+                    debugger
+                    toys[i].selected = true
+                    
+                } else {
+                    toys[i].selected = false
                 }
                 new Forms()
                 this.draw()
+                // this.attachChange()
             }
         })
     }

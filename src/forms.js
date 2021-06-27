@@ -35,13 +35,6 @@ class Forms extends Toys{
 
     render() {
         const form = document.createElement('form');
-        // if (exist.length > 0 && parseInt(exist[0].id == this.shape.id)) {
-        //     if (this.shape.name == "Rectangle") {
-        //         form.innerHTML = this.renderRectHTML(this.shape);
-        //     } else {
-        //         form.innerHTML = this.renderArcHTML(this.shape);
-        //     }
-        // } else {
             form.className = 'edit-shape';
             form.id = this.shape.id
             if (this.shape.name == "Rectangle") {
@@ -51,37 +44,37 @@ class Forms extends Toys{
             }
             this.form = form
             this.constructor.container.append(form)
-        // }
     }
 
     renderRectHTML = (shape) => {
         return `
             <button>Delete</button>
             <p>${shape.name}</p>
-            <label>Center X</label>
-            <p>${shape.x}</p>
-            <label>Center Y</label>
-            <p>${shape.y}</p>
-            <label>Height</label>            
+            <p>Center X - ${shape.x}</p>
+            <p>Center Y - ${shape.y}</p>
+            <p>Height - 
             <input type="range" name="height" id="height" min='1' max="500" value="${shape.height}" />
-            <label>Width</label>
+            </p>            
+            <p>Width
             <input type="range" name="width" id="width" min='1' max="500" value="${shape.width}" />
-            <label>Color</label>
+            </p>
+            <p>Color
             <input type="color" name="color" id="color" value='${shape.color}' />
+            </p>
         `
     }
     renderArcHTML = (shape) => {
         return `
             <button>Delete</button>
             <p>${shape.name}</p>
-            <label>Center X</label>
-            <p>${parseInt(shape.x)}</p>
-            <label>Center Y</label>
-            <p>${shape.y}</p>
-            <label>Radius</label>
+            <p>Center X - ${shape.x}</p>
+            <p>Center Y - ${shape.y}</p>
+            <p>Radius - 
             <input type="range" name="radius" id="radius" min='1' max="500" value="${shape.r}" />
-            <label>Color</label>
+            </p>            
+            <p>Color
             <input type="color" name="color" id="color" value='${shape.color}' />
+            </p>
         `
     }
 
