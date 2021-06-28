@@ -16,6 +16,7 @@ class Rectangles extends Toys {
             color: this.randomColor(),
             name: "Rectangle",
             dragging: false,
+            hover: false,
             selected: false
         })
     }

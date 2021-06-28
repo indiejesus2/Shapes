@@ -1,6 +1,4 @@
-#canvas {
-    position: absolute;
-}
+
 
 #toy-form {
     position: absolute;
@@ -19,5 +17,6 @@
     width: 500px;
     height: 500px;
     margin: 10px;
+    position: absolute;
     /* padding: 10px; */
 }

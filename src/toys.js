@@ -1,30 +1,17 @@
 class Toys {
+    static radius = document.getElementsByName('radius')
     static height = document.getElementsByName("height")
-        static width = document.getElementsByName("width")
-        static radius = document.getElementsByName('radius')
+    static width = document.getElementsByName("width")
 
+    
     constructor() {
         this.startX
         this.startY
-        this.shift = false
         this.draw()
         this.attachClickEventListener()
-        this.attachShiftKeyListener()
-        // this.attachMouseEnterListener()
-        this.attachMouseHoverListener()
         this.attachMouseDownListener()
         this.attachMouseMoveListener()
         this.attachMouseUpListener()
-    }
-
-    attachShiftKeyListener() {
-        document.addEventListener('keydown', this.shiftShape)
-    }
-
-    shiftShape = (e) => {
-        if (e.key == "Shift") {
-            this.shift = true
-        }
     }
 
     randomColor() {
@@ -52,14 +39,27 @@ class Toys {
 
     attachChange(toy) {
         if (toy.selected == true) {
-            if (toy.name == "Rectangle") {
-                height.addEventListener("input", this.handleHeight)
-                width.addEventListener("input", this.handleWidth)
-            } else {
-                radius.addEventListener("input", this.handleRadius)
+            if (toy.name == 'Rectangle' && !!height) {
+                if (height.length > 1) {
+                    for (let i=0;i<height.length;i++) {
+                        height[i].addEventListener("input", this.handleHeight)
+                        width[i].addEventListener("input", this.handleWidth)
+                    }
+                } else {
+                    height.addEventListener("input", this.handleHeight)
+                    width.addEventListener("input", this.handleWidth)
+                }
+            } else if (!!radius) {
+                if (radius.length > 1) {
+                    for (let i = 0; i<radius.length;i++) {
+                        radius[i].addEventListener("input", this.handleRadius)
+                    }
+                } else {
+                    radius.addEventListener("input", this.handleRadius)
+                }
             }
         }
-}
+    }
 
     handleHeight = (e) => {
         toys.forEach(toy => {
@@ -68,7 +68,6 @@ class Toys {
             }
         })
         this.draw()
-        // new Forms()
     }
 
     handleWidth = (e) => {
@@ -112,10 +111,13 @@ class Toys {
                 toys[i].dragging = true
             } else if (toys[i].selected == true) {
                 toys[i].dragging = true
-            }
+            } else {
+                toys[i].selected = false
         }
         this.startX=e.offsetX
         this.startY=e.offsetY
+        new Forms()
+        }
     }
     
     mouseMove = (e) => {
@@ -128,27 +130,23 @@ class Toys {
             if (toy.dragging == true) {
                 toy.x+=dx
                 toy.y+=dy
+                toy.hover = true
+                new Forms()
+            } else if (this.isMouseInShape(e.offsetX, e.offsetY, toy)) {
+                toy.hover = true
+            } else {
+                toy.hover = false
+                new Forms()
+
             }
         }
         this.draw()
-        new Forms()
         this.startX=e.offsetX
         this.startY=e.offsetY
     }
 
     mouseUp = (e) => {
         toys.forEach(toy => toy.dragging = false)
-    }
-
-    mouseEnter = (e) => {
-        this.attachMouseHoverListener()
-    }
-
-    attachMouseEnterListener() {
-        canvas.addEventListener('mouseenter', this.mouseEnter);
-    }
-    attachMouseHoverListener() {
-        canvas.addEventListener('mouseenter', this.mouseOver);
     }
     
     attachMouseDownListener() {
@@ -164,26 +162,7 @@ class Toys {
     }
 
     attachClickEventListener() {
-        canvas.addEventListener("click", (e) => {
-            e.preventDefault()
-            e.stopImmediatePropagation()
-            for (let i = 0; i<toys.length;i++) {
-                debugger
-                if(this.isMouseInShape(e.offsetX, e.offsetY, toys[i])) {
-                    toys[i].selected = toys[i].selected == false ? true : false
-                    // this.attachColorChange(toys[i])
-                } else if (toys[i].selected == true && this.shift == true) {
-                    debugger
-                    toys[i].selected = true
-                    
-                } else {
-                    toys[i].selected = false
-                }
-                new Forms()
-                this.draw()
-                // this.attachChange()
-            }
-        })
+        canvas.addEventListener("click", this.handleOnClick);
     }
 
     isMouseInShape(mx, my, toy){
@@ -206,28 +185,21 @@ class Toys {
 
     handleOnClick = (e) => {
         e.preventDefault()
-        e.stopPropagation()
-        console.log("click")
+        e.stopImmediatePropagation()
+        debugger
         for (let i = 0; i<toys.length;i++) {
             if(this.isMouseInShape(e.offsetX, e.offsetY, toys[i])) {
                 toys[i].selected = toys[i].selected == false ? true : false
+            } else if (toys[i].selected == true && e.shiftKey == true) {
+                toys[i].selected = true
+            } else {
+                toys[i].selected = false
             }
-            if (toys[i].selected == true) {
-
-                // ctx.stroke() || ctx.strokeRect(toys[i].x, toys[i].y, toys[i].width, toys[i].height)
-            }
+            new Forms()
+            this.draw()
         }
-        this.draw()
-
     }
-        // toys.forEach(toy => {
-        //     } 
-        //     // else {
-        //     //     toy.selected = false
-        //     //     this.draw()
-        //     // }
-        // })
-    
+
     draw() {   
         ctx.clearRect(0, 0, canvas.width, canvas.height)
         toys.forEach(toy => {
@@ -237,14 +209,30 @@ class Toys {
                 ctx.arc(toy.x, toy.y, toy.r, toy.sAngle, toy.eAngle, true)
                 ctx.closePath()
                 ctx.fill()
+                if (toy.hover == true) {
+                    ctx.lineWidth = 6;
+                    ctx.strokeStyle = 'rgba(0,0,255,0.5)'
+                    ctx.stroke()
+                }
                 if (toy.selected == true) {
+                    ctx.beginPath()
+                    ctx.arc(toy.x, toy.y, toy.r*1.25, toy.sAngle, toy.eAngle, true)
+                    ctx.strokeStyle = "gold"
                     ctx.stroke()
                 }
             } else {
                 ctx.fillStyle = `${toy.color}`
                 ctx.fillRect(toy.x, toy.y, toy.width, toy.height)
-                if (toy.selected == true) {
+                if (toy.hover == true) {
+                    ctx.lineWidth = 6;
+                    ctx.strokeStyle = 'rgba(0,0,255,0.5)'
                     ctx.strokeRect(toy.x, toy.y, toy.width, toy.height)
+                }
+                if (toy.selected == true) {
+                    ctx.lineWidth = 4
+                    ctx.strokeStyle = "gold"
+                    ctx.strokeRect(toy.x-5, toy.y-5, toy.width+10, toy.height+10)
+
                 }
             }
         })
