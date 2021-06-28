@@ -64,7 +64,7 @@ class Toys {
     handleHeight = (e) => {
         toys.forEach(toy => {
             if (toy.id === parseInt(e.target.form.id)) {
-                toy.height = e.target.value
+                toy.height = parseInt(e.target.value)
             }
         })
         this.draw()
@@ -73,7 +73,8 @@ class Toys {
     handleWidth = (e) => {
         toys.forEach(toy => {
             if (toy.id === parseInt(e.target.form.id)) {
-                toy.width = e.target.value
+                debugger
+                toy.width = parseInt(e.target.value)
             }
         })
         this.draw()
@@ -82,7 +83,7 @@ class Toys {
     handleRadius = (e) => {
         toys.forEach(toy => {
             if (toy.id === parseInt(e.target.form.id)) {
-                toy.r = e.target.value
+                toy.r = parseInt(e.target.value)
             }
         })
         this.draw()
@@ -144,26 +145,25 @@ class Toys {
         this.startX=e.offsetX
         this.startY=e.offsetY
     }
-
-    mouseUp = (e) => {
-        toys.forEach(toy => toy.dragging = false)
-    }
     
+    attachClickEventListener() {
+        canvas.addEventListener("click", this.handleOnClick);
+    }
+
     attachMouseDownListener() {
         canvas.addEventListener('mousedown', this.mouseDown);
     }
     
     attachMouseUpListener() {
-        canvas.addEventListener('mouseup', this.mouseUp);
+        canvas.addEventListener('mouseup', function() {
+            toys.forEach(toy => toy.dragging = false)
+        });
     }
 
     attachMouseMoveListener() {
         canvas.addEventListener('mousemove', this.mouseMove);
     }
 
-    attachClickEventListener() {
-        canvas.addEventListener("click", this.handleOnClick);
-    }
 
     isMouseInShape(mx, my, toy){
         if (toy.name == "Circle") {
@@ -186,7 +186,6 @@ class Toys {
     handleOnClick = (e) => {
         e.preventDefault()
         e.stopImmediatePropagation()
-        debugger
         for (let i = 0; i<toys.length;i++) {
             if(this.isMouseInShape(e.offsetX, e.offsetY, toys[i])) {
                 toys[i].selected = toys[i].selected == false ? true : false
@@ -231,6 +230,7 @@ class Toys {
                 if (toy.selected == true) {
                     ctx.lineWidth = 4
                     ctx.strokeStyle = "gold"
+                    debugger
                     ctx.strokeRect(toy.x-5, toy.y-5, toy.width+10, toy.height+10)
 
                 }

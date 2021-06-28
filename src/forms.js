@@ -53,10 +53,10 @@ class Forms extends Toys{
             <p>Center X - ${shape.x}</p>
             <p>Center Y - ${shape.y}</p>
             <p>Height - 
-            <input type="range" name="height" id="height" min='1' max="500" value="${shape.height}" />
+            <input type="range" name="height" id="height" min='10' max="200" value="${shape.height}" />
             </p>            
             <p>Width
-            <input type="range" name="width" id="width" min='1' max="500" value="${shape.width}" />
+            <input type="range" name="width" id="width" min='10' max="200" value="${shape.width}" />
             </p>
             <p>Color
             <input type="color" name="color" id="color" value='${shape.color}' />
@@ -70,7 +70,7 @@ class Forms extends Toys{
             <p>Center X - ${shape.x}</p>
             <p>Center Y - ${shape.y}</p>
             <p>Radius - 
-            <input type="range" name="radius" id="radius" min='1' max="500" value="${shape.r}" />
+            <input type="range" name="radius" id="radius" min='10' max="100" value="${shape.r}" />
             </p>            
             <p>Color
             <input type="color" name="color" id="color" value='${shape.color}' />

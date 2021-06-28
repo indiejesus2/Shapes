@@ -9,8 +9,8 @@ class Rectangles extends Toys {
     render() {
         toys.push({
             id: toys.length + 1,
-            x: parseInt(Math.random() * (canvas.width - 50)),
-            y: parseInt(Math.random() * (canvas.height - 75)),
+            x: parseInt(Math.random() * (250) + 50),
+            y: parseInt(Math.random() * (250) + 75),
             width: 50,
             height: 75,
             color: this.randomColor(),
