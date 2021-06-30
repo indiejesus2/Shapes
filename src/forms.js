@@ -58,7 +58,7 @@ class Forms extends Toys{
         return `
             <div class="shape-form">
             <header className="header">
-            <button>Delete</button>
+            <button><i class="fa fa-trash-o"></i></button>
             <p>${shape.name}</p>
             </header>
             <div className="form-body">
@@ -67,7 +67,7 @@ class Forms extends Toys{
             <p> Height - 
             <input type="range" name="height" id="height" min='10' max="200" value="${shape.height}" />
             </p>            
-            <p> Width
+            <p> Width - 
             <input type="range" name="width" id="width" min='10' max="200" value="${shape.width}" />
             </p>
             <p> Color
@@ -81,7 +81,7 @@ class Forms extends Toys{
         return `
             <div class="shape-form">
             <header className="header">
-            <button>Delete</button>
+            <button><i class="fa fa-trash-o"></i></button>
             <p>${shape.name}</p>
             </header>
             <div className="form-body">
