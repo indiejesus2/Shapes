@@ -3,7 +3,6 @@ class Toys {
     static height = document.getElementsByName("height")
     static width = document.getElementsByName("width")
 
-    
     constructor() {
         this.startX
         this.startY
@@ -15,18 +14,9 @@ class Toys {
         let colors = document.getElementsByName("color");
         colors.forEach(color => {
             if (color.form.id == toy.id) {
-                color.addEventListener("input", this.handleColor);
+                color.addEventListener("input", this.handleChange);
             }
         })
-    }
-    
-    handleColor = (e) => {
-        for (let i = 0; i<toys.length;i++) {
-            if (toys[i].id === parseInt(e.target.form.id)) {
-                toys[i].color = e.target.value
-            }
-        }
-        Toys.draw()
     }
 
     attachChange(toy) {
@@ -34,47 +24,30 @@ class Toys {
             if (toy.name == 'Rectangle' && !!height) {
                 if (height.length > 1) {
                     for (let i=0;i<height.length;i++) {
-                        height[i].addEventListener("input", this.handleHeight)
-                        width[i].addEventListener("input", this.handleWidth)
+                        height[i].addEventListener("input", this.handleChange)
+                        width[i].addEventListener("input", this.handleChange)
                     }
                 } else {
-                    height.addEventListener("input", this.handleHeight)
-                    width.addEventListener("input", this.handleWidth)
+                    height.addEventListener("input", this.handleChange)
+                    width.addEventListener("input", this.handleChange)
                 }
             } else if (!!radius) {
                 if (radius.length > 1) {
                     for (let i = 0; i<radius.length;i++) {
-                        radius[i].addEventListener("input", this.handleRadius)
+                        radius[i].addEventListener("input", this.handleChange)
                     }
                 } else {
-                    radius.addEventListener("input", this.handleRadius)
+                    radius.addEventListener("input", this.handleChange)
                 }
             }
         }
     }
 
-    handleHeight = (e) => {
+    handleChange = (e) => {
+        let change = e.target.name
         toys.forEach(toy => {
             if (toy.id === parseInt(e.target.form.id)) {
-                toy.height = parseInt(e.target.value)
-            }
-        })
-        Toys.draw()
-    }
-
-    handleWidth = (e) => {
-        toys.forEach(toy => {
-            if (toy.id === parseInt(e.target.form.id)) {
-                toy.width = parseInt(e.target.value)
-            }
-        })
-        Toys.draw()
-    }
-
-    handleRadius = (e) => {
-        toys.forEach(toy => {
-            if (toy.id === parseInt(e.target.form.id)) {
-                toy.r = parseInt(e.target.value)
+                toy[`${change}`] = change == "color" ? e.target.value : parseInt(e.target.value)
             }
         })
         Toys.draw()
@@ -83,10 +56,10 @@ class Toys {
     static draw() {   
         ctx.clearRect(0, 0, canvas.width, canvas.height)
         toys.forEach(toy => {
-            if (toy.r) {
+            if (toy.radius) {
                 ctx.beginPath();
                 ctx.fillStyle = `${toy.color}`
-                ctx.arc(toy.x, toy.y, toy.r, toy.sAngle, toy.eAngle, true)
+                ctx.arc(toy.x, toy.y, toy.radius, toy.sAngle, toy.eAngle, true)
                 ctx.closePath()
                 ctx.fill()
                 if (toy.hover == true) {
@@ -96,7 +69,7 @@ class Toys {
                 }
                 if (toy.selected == true || toy.dragging == true) {
                     ctx.beginPath()
-                    ctx.arc(toy.x, toy.y, toy.r*1.25, toy.sAngle, toy.eAngle, true)
+                    ctx.arc(toy.x, toy.y, toy.radius*1.25, toy.sAngle, toy.eAngle, true)
                     ctx.strokeStyle = "gold"
                     ctx.stroke()
                 }

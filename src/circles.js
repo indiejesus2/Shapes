@@ -11,7 +11,7 @@ class Circles extends Toys{
             id: toys.length + 1,
             x: parseInt(Math.random() * 250) + 25,
             y: parseInt(Math.random() * 250) + 25,
-            r: 25,
+            radius: 25,
             sAngle: 0,
             eAngle: 2 * Math.PI,
             color: "#xxxxxx".replace(/x/g, y=>(Math.random()*16|0).toString(16)),

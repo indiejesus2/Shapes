@@ -15,6 +15,13 @@ class Forms extends Toys{
         })
     }
 
+    clear() {
+        let forms = document.getElementsByClassName('edit-shape')
+        while(forms.length > 0) {
+            forms[0].remove()
+        }
+    }
+
     attachDeleteEventListener() {
         let trash = document.querySelector("header")
         let remove = trash.firstElementChild
@@ -81,7 +88,7 @@ class Forms extends Toys{
             <p> Center X - ${shape.x}</p>
             <p> Center Y - ${shape.y}</p>      
             <p>Radius - 
-            <input type="range" name="radius" id="radius" min='10' max="100" value="${shape.r}" />
+            <input type="range" name="radius" id="radius" min='10' max="100" value="${shape.radius}" />
             </p>  
             <p> Color
             <input type="color" name="color" id="color" value='${shape.color}' />
@@ -89,13 +96,6 @@ class Forms extends Toys{
             </div>
             </div>
         `
-    }
-
-    clear() {
-        let forms = document.getElementsByClassName('edit-shape')
-        while(forms.length > 0) {
-            forms[0].remove()
-        }
     }
 
 }

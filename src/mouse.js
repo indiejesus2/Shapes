@@ -30,7 +30,7 @@ class Mouse {
         if (toy.name == "Circle") {
             var dx = mx-toy.x;
             var dy = my-toy.y;
-            if(dx**2+dy**2<toy.r*toy.r) {
+            if(dx**2+dy**2<toy.radius*toy.radius) {
                 return true
             }
         } else {
@@ -42,6 +42,24 @@ class Mouse {
                 return true
             }
         }
+    }
+
+    handleOnClick = (e) => {
+        e.preventDefault()
+        e.stopImmediatePropagation()
+        toys.forEach(toy => {
+            if(this.isMouseInShape(e.offsetX, e.offsetY, toy)) {
+                toy.selected = toy.selected == false ? true : false
+            } else if (toy.selected == true && e.shiftKey == true) {
+                toy.selected = true
+                this.shift = true
+            } else {
+                toy.selected = false
+                this.shift = false
+            }
+            new Forms()
+            Toys.draw()
+        })
     }
     
     mouseDown = (e) => {
@@ -85,23 +103,4 @@ class Mouse {
         this.startY=e.offsetY
     }
     
-
-    handleOnClick = (e) => {
-        e.preventDefault()
-        e.stopImmediatePropagation()
-        toys.forEach(toy => {
-            if(this.isMouseInShape(e.offsetX, e.offsetY, toy)) {
-                toy.selected = toy.selected == false ? true : false
-            } else if (toy.selected == true && e.shiftKey == true) {
-                toy.selected = true
-                this.shift = true
-            } else {
-                toy.selected = false
-                this.shift = false
-            }
-            new Forms()
-            Toys.draw()
-        })
-    }
-
 }
