@@ -14,7 +14,7 @@ class Circles extends Toys{
             r: 25,
             sAngle: 0,
             eAngle: 2 * Math.PI,
-            color: this.randomColor(),
+            color: "#xxxxxx".replace(/x/g, y=>(Math.random()*16|0).toString(16)),
             name: "Circle",
             dragging: false,
             hover: false,

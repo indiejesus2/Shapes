@@ -13,7 +13,7 @@ class Rectangles extends Toys {
             y: parseInt(Math.random() * (250) + 75),
             width: 50,
             height: 75,
-            color: this.randomColor(),
+            color: "#xxxxxx".replace(/x/g, y=>(Math.random()*16|0).toString(16)),
             name: "Rectangle",
             dragging: false,
             hover: false,

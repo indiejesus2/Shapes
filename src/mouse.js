@@ -26,6 +26,24 @@ class Mouse {
         canvas.addEventListener('mousemove', this.mouseMove);
     }
     
+    isMouseInShape(mx, my, toy){
+        if (toy.name == "Circle") {
+            var dx = mx-toy.x;
+            var dy = my-toy.y;
+            if(dx**2+dy**2<toy.r*toy.r) {
+                return true
+            }
+        } else {
+            var rLeft = toy.x
+            var rRight=toy.x+toy.width;
+            var rTop=toy.y
+            var rBott=rTop+toy.height
+            if(mx>rLeft && mx<rRight && my>rTop && my<rBott) {
+                return true
+            }
+        }
+    }
+    
     mouseDown = (e) => {
         e.preventDefault()
         e.stopImmediatePropagation()
@@ -40,9 +58,9 @@ class Mouse {
                 toy.dragging = false
             }
         })
+        new Forms()
         this.startX=e.offsetX
         this.startY=e.offsetY
-        new Forms()
     }
     
     mouseMove = (e) => {
@@ -62,27 +80,11 @@ class Mouse {
             }
             Toys.draw()
         })
+        new Forms()
         this.startX=e.offsetX
         this.startY=e.offsetY
     }
     
-    isMouseInShape(mx, my, toy){
-        if (toy.name == "Circle") {
-            var dx = mx-toy.x;
-            var dy = my-toy.y;
-            if(dx**2+dy**2<toy.r*toy.r) {
-                return true
-            }
-        } else {
-            var rLeft = toy.x
-            var rRight=toy.x+toy.width;
-            var rTop=toy.y
-            var rBott=rTop+toy.height
-            if(mx>rLeft && mx<rRight && my>rTop && my<rBott) {
-                return true
-            }
-        }
-    }
 
     handleOnClick = (e) => {
         e.preventDefault()
@@ -99,7 +101,6 @@ class Mouse {
             }
             new Forms()
             Toys.draw()
-            console.log(toy.selected)
         })
     }
 
