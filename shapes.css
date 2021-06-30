@@ -1,22 +1,54 @@
+body {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr
+}
 
+
+button {
+    width: 125px;
+    margin-right: 10px;
+}
 
 #toy-form {
-    position: absolute;
-    display: block;
-    float: right;
-    right: 10px;
-    top: 10px;
-    /* width: 300px; */
-    margin: 10px;
+    display: grid;
+    grid-template-columns: max-content 100px 1fr;
+    margin-left: 10px;
     padding: 10px;
+}
+
+#edit-shape {
+    display: grid;
+    grid-column-start: 4;
+    grid-column-end: span end;
+    grid-row-start: row1-start;
+    grid-row-end: 3;
+    border: 1px solid black;
+    padding: 5px;
     justify-content: space-between;
 }
 
+.shape-form {
+    border: 1px solid black;
+}
+
+.form-body {
+    padding: 5px;
+}
+
+header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-bottom: 1px black solid;
+    padding: 5px;
+    justify-items: center;
+    height: fit-content;
+}
+
 #canvas_container {
+    display: block;
     border: 1px black solid;
     width: 500px;
     height: 500px;
-    margin: 10px;
-    position: absolute;
+    margin: 0px auto;
     /* padding: 10px; */
 }

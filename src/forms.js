@@ -15,21 +15,22 @@ class Forms extends Toys{
         })
     }
 
-    attachDeleteEventListener = (e) => {
-        let form = document.getElementById(this.shape.id)
-        let remove = form.firstElementChild
+    attachDeleteEventListener() {
+        let trash = document.querySelector("header")
+        let remove = trash.firstElementChild
         remove.addEventListener("click", this.handleDeleteShape)
     }
     
     handleDeleteShape = (e) => {
         e.preventDefault()
+        e.stopImmediatePropagation()
         const newToys = toys.filter(toy => {
             if (toy.id != parseInt(this.form.id)) {
                 return toy
             }
         })
         toys = newToys
-        this.draw()
+        Toys.draw()
         new Forms()
     }
 
@@ -48,33 +49,45 @@ class Forms extends Toys{
 
     renderRectHTML = (shape) => {
         return `
+            <div class="shape-form">
+            <header className="header">
             <button>Delete</button>
             <p>${shape.name}</p>
-            <p>Center X - ${shape.x}</p>
-            <p>Center Y - ${shape.y}</p>
-            <p>Height - 
+            </header>
+            <div className="form-body">
+            <p> Center X - ${shape.x}</p>
+            <p> Center Y - ${shape.y}</p>
+            <p> Height - 
             <input type="range" name="height" id="height" min='10' max="200" value="${shape.height}" />
             </p>            
-            <p>Width
+            <p> Width
             <input type="range" name="width" id="width" min='10' max="200" value="${shape.width}" />
             </p>
-            <p>Color
+            <p> Color
             <input type="color" name="color" id="color" value='${shape.color}' />
             </p>
+            </div>
+            </div>
         `
     }
     renderArcHTML = (shape) => {
         return `
+            <div class="shape-form">
+            <header className="header">
             <button>Delete</button>
             <p>${shape.name}</p>
-            <p>Center X - ${shape.x}</p>
-            <p>Center Y - ${shape.y}</p>
+            </header>
+            <div className="form-body">
+            <p> Center X - ${shape.x}</p>
+            <p> Center Y - ${shape.y}</p>      
             <p>Radius - 
             <input type="range" name="radius" id="radius" min='10' max="100" value="${shape.r}" />
-            </p>            
-            <p>Color
+            </p>  
+            <p> Color
             <input type="color" name="color" id="color" value='${shape.color}' />
             </p>
+            </div>
+            </div>
         `
     }
 

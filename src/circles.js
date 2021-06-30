@@ -1,9 +1,9 @@
-class Circles extends Toys {
+class Circles extends Toys{
 
     constructor() {
         super()
         this.render()
-        this.draw()
+        Toys.draw()
     }
 
     render() {
